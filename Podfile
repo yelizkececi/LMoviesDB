@@ -6,7 +6,7 @@ target 'LMoviesDB' do
   use_frameworks!
 
   pod 'Alamofire', '~> 5.2'
-  pod 'ImageSlideshow', '~> 1.9.0'
+  pod "ImageSlideshow/SDWebImage"
   
   # Pods for LMoviesDB
 

@@ -18,20 +18,56 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yD8-vg-1e2" customClass="ImageSlideshow" customModule="ImageSlideshow">
                         <rect key="frame" x="0.0" y="0.0" width="339" height="256"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Din-FB-evS" customClass="GradientView" customModule="LMoviesDB" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="339" height="256"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="yeliz" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zQg-qH-MKU">
+                                <rect key="frame" x="16" y="191.5" width="307" height="14.5"/>
+                                <color key="backgroundColor" white="0.5" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="yeliz" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W9n-Lm-A06">
+                                <rect key="frame" x="16" y="151.5" width="307" height="24"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="zQg-qH-MKU" secondAttribute="trailing" constant="16" id="28v-fR-h4H"/>
+                            <constraint firstItem="W9n-Lm-A06" firstAttribute="leading" secondItem="Din-FB-evS" secondAttribute="leading" constant="16" id="34y-1Q-Rrg"/>
+                            <constraint firstItem="zQg-qH-MKU" firstAttribute="leading" secondItem="Din-FB-evS" secondAttribute="leading" constant="16" id="L9A-Qq-i7G"/>
+                            <constraint firstAttribute="trailing" secondItem="W9n-Lm-A06" secondAttribute="trailing" constant="16" id="dO1-v3-m6a"/>
+                            <constraint firstItem="zQg-qH-MKU" firstAttribute="top" secondItem="W9n-Lm-A06" secondAttribute="bottom" constant="16" id="lq8-Rp-vlu"/>
+                            <constraint firstAttribute="bottom" secondItem="zQg-qH-MKU" secondAttribute="bottom" constant="50" id="x9B-Pk-SsK"/>
+                        </constraints>
                     </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="yD8-vg-1e2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="6Y5-BI-gSi"/>
+                    <constraint firstAttribute="trailing" secondItem="Din-FB-evS" secondAttribute="trailing" id="R4S-X9-zOn"/>
+                    <constraint firstItem="Din-FB-evS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="SoR-Hq-aHe"/>
                     <constraint firstAttribute="trailing" secondItem="yD8-vg-1e2" secondAttribute="trailing" id="TRH-e2-VeP"/>
+                    <constraint firstItem="Din-FB-evS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="bRk-8y-Coa"/>
                     <constraint firstItem="yD8-vg-1e2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="bvz-H3-C6w"/>
+                    <constraint firstAttribute="bottom" secondItem="Din-FB-evS" secondAttribute="bottom" id="elC-QP-baH"/>
                     <constraint firstAttribute="bottom" secondItem="yD8-vg-1e2" secondAttribute="bottom" id="rkc-CD-ZWL"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="movieDescriptionLabel" destination="zQg-qH-MKU" id="6gJ-dR-Ebz"/>
+                <outlet property="movieTitleLabel" destination="W9n-Lm-A06" id="yUC-1d-kz2"/>
+                <outlet property="movieView" destination="Din-FB-evS" id="fm3-72-j2N"/>
                 <outlet property="slideshow" destination="yD8-vg-1e2" id="vtI-1k-sBX"/>
             </connections>
-            <point key="canvasLocation" x="151.44927536231884" y="136.27232142857142"/>
+            <point key="canvasLocation" x="151.44927536231884" y="135.9375"/>
         </tableViewCell>
     </objects>
 </document>

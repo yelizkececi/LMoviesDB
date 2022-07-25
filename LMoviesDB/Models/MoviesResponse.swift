@@ -7,17 +7,16 @@
 
 import Foundation
 
+//MARK: - Properties
 struct MoviesResponse: Codable {
     let page: Int
     let totalPages: Int
     let totalResults: Int
     let results: [Movie]
-    let dates: [Date]
 
     enum CodingKeys: String, CodingKey {
         case page
         case results
-        case dates
         case totalPages = "total_pages"
         case totalResults = "total_results"
     }
