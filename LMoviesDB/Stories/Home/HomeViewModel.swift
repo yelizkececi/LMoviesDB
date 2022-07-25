@@ -35,23 +35,30 @@ class HomeViewModel {
     
     //MARK: - Method Request loadUpComingMovieData
     func loadUpComingMovieData() {
-        MovieService.shared.getUpComing(parameters: UrlParameter(page: currentPage), successHandler: { response in
-            self.movies.append(contentsOf: response.results)
-            self.maxPage = response.totalPages
-            self.delegate?.dataUpdated()
-        }, errorHandler: { error in
-            print(error)
+        MovieService.shared.getUpComing(page: 1, completion: { result in
+            switch result {
+            case .responseSuccess(let response):
+                self.movies.append(contentsOf: response.results)
+                self.maxPage = response.totalPages
+                self.delegate?.dataUpdated()
+            case .responseFail(let error):
+                print(error)
+            }
         })
     }
-    //MARK: - Method Request loadNowPlayingMovieData
+    
     func loadNowPlayingMovieData() {
-        MovieService.shared.getNowPlaying(parameters: UrlParameter(page: currentPage), successHandler: { response in
-            self.sliderMovies = response.results
-            self.delegate?.dataUpdated()
-        }, errorHandler: { error in
-            print(error)
+        MovieService.shared.getNowPlaying(page: 1, completion: { result in
+            switch result {
+            case .responseSuccess(let response):
+                self.sliderMovies = response.results
+                self.delegate?.dataUpdated()
+            case .responseFail(let error):
+                print(error)
+            }
         })
     }
+    
     //MARK: - Method Request loadMoreDataIfNeeded
     func loadMoreDataIfNeeded(indexPath: IndexPath) {
         if ((indexPath.row == numberOfRowsInSection() - 1) &&  currentPage <= maxPage){
@@ -61,13 +68,19 @@ class HomeViewModel {
     }
     
     //MARK: - Method Movie selectedMovieDetails
-    func selectedMovieDetails(indexPath: IndexPath){
+    func selectedMovieDetails(indexPath: IndexPath) {
         guard let movieDetailsId = movies[indexPath.row].id else { return }
-        MovieService.shared.getMovieDetails(movieDetailsId: movieDetailsId, successHandler: { response in
-            let moviesViewModel = MoviesViewModel(response)
-            self.delegate?.didSelectMovie(moviesViewModel)
-        }, errorHandler: { error in
-            print(error)
+        MovieService.shared.getMovieDetails(with: String(movieDetailsId), completion: { result in
+            print("yy \(result)")
+            switch result {
+               
+            case .responseSuccess(let response):
+                print("yy \(response)")
+                let moviesViewModel = MoviesViewModel(response)
+                self.delegate?.didSelectMovie(moviesViewModel)
+            case .responseFail(let error):
+                print(error)
+            }
         })
     }
 }

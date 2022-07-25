@@ -15,7 +15,7 @@ class HomeViewController: UIViewController {
     let headerCellReuseIdentifier = "MovieHeaderTableViewCell"
 
     @IBOutlet weak var tableView: UITableView!{
-        didSet{
+        didSet {
             tableView.delegate = self
             tableView.dataSource = self
             tableView.register(UINib(nibName: headerCellReuseIdentifier, bundle: nil), forCellReuseIdentifier: headerCellReuseIdentifier)
@@ -36,15 +36,13 @@ class HomeViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == "ToMovieDetailViewController" {
-                if let viewController = segue.destination as? MovieDetailsViewController {
-                    if sender != nil {
-                        let viewModel = sender as! MoviesViewModel
-                        viewController.moviesViewModel = viewModel
-                    }
-                }
+        if segue.identifier == "ToMovieDetailViewController" {
+            if let viewController = segue.destination as? MovieDetailsViewController,
+               let movieViewModel = sender as? MoviesViewModel {
+                viewController.moviesViewModel = movieViewModel
             }
         }
+    }
 }
 
 //MARK: - TableView Extensions
@@ -65,7 +63,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let cell = tableView.dequeueReusableCell(withIdentifier: headerCellReuseIdentifier) as! MovieHeaderTableViewCell
         let movieViewModel = homeViewModel.sliderMovies.map {
-            MovieHeaderCellViewModel(movie: $0 )
+            MovieHeaderCellViewModel(movie: $0)
         }
         cell.configure(for: movieViewModel)
         

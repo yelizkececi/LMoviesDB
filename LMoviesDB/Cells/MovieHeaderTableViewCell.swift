@@ -29,9 +29,10 @@ class MovieHeaderTableViewCell: UITableViewCell, ImageSlideshowDelegate {
         slideshow.setImageInputs(inputSources)
         slideshow.contentScaleMode = .scaleToFill
         slideshow.delegate = self
-        if movie!.count > 0 {
-            movieTitleLabel.text = movie?[0].title
-            movieDescriptionLabel.text = movie?[0].overview
+        slideshow.activityIndicator = DefaultActivityIndicator(style: .medium, color: UIColor.black)
+        if let movie = movie, movie.count > 0 {
+            movieTitleLabel.text = movie[0].title
+            movieDescriptionLabel.text = movie[0].overview
         }
     }
     

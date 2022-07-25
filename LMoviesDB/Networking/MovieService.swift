@@ -9,10 +9,21 @@ import Foundation
 import Alamofire
 
 class MovieService {
-    
+    //MARK: - Enum
     enum Route: String {
         case nowPlaying = "now_playing"
         case upComing = "upcoming"
+        case movieDetails = ""
+    }
+    
+    enum NetworkResponse<T> {
+        case responseSuccess(T)
+        case responseFail(NetworkError)
+    }
+    
+    enum NetworkError {
+        case unknown
+        case noData
     }
     
     //MARK: - Typealias
@@ -34,61 +45,54 @@ class MovieService {
     let baseIMDBUrl = "https://www.imdb.com/title/"
     let baseIMDBHomeUrl = "https://www.imdb.com/"
     
-    //MARK: - Action Now Playing - Slider
-    func getNowPlaying(parameters: UrlParameter,
-                       successHandler: @escaping ((MoviesResponse) -> Void),
-                       errorHandler: @escaping ErrorHandler) {
-        AF.request(baseUrl + Route.nowPlaying.rawValue, method: .get, parameters: parameters).responseData { response in
-            guard let responseData = response.data else {
-                errorHandler("There was an error fetching data.")
-                return
-            }
-            do {
-                let movieResponse = try JSONDecoder().decode(MoviesResponse.self, from: responseData)
-                successHandler(movieResponse)
-            } catch let error {
-                errorHandler("There was an error fetching data.")
-                print(error)
+    func request<E: Encodable, D: Decodable>(route: Route?, parameters: E, movieDetailsId: String = "", completion: @escaping (NetworkResponse<D>) -> Void) {
+        guard let url = route?.rawValue else {
+            return completion(.responseFail(.unknown))
+        }
+        let endPoint = baseUrl + url + movieDetailsId
+        
+        do {
+            let parameters = try parameters.asDictionary()
+            AF.request(endPoint, method:.get, parameters: parameters, encoding: URLEncoding.default).responseData { [weak self] data in
+                switch data.result{
+                case let .success(responseData):
+                    self?.handleDataResponse(data: responseData, completion: completion)
+                case .failure(_):
+                    completion(.responseFail(.unknown))
+                }
             }
         }
+        catch let error as NSError {
+            print(error.userInfo)
+        }
+    }
+    
+    private func handleDataResponse<D: Decodable>(data: Data?, completion: @escaping (NetworkResponse<D>) -> Void) {
+        
+        guard let data = data else {
+            return completion(.responseFail(.unknown))
+        }
+        do {
+            let model = try JSONDecoder().decode(D.self, from: data)
+            completion(.responseSuccess(model))
+        }
+        catch let error as NSError {
+            print(error.userInfo)
+        }
+    }
+    
+    //MARK: - Action Now Playing - Slider
+    func getNowPlaying(page: Int, completion: @escaping (NetworkResponse<MoviesResponse>) -> Void) {
+        request(route: .nowPlaying, parameters: UrlParameter(page: page), completion: completion)
     }
     
     //MARK: - Action Up Coming - List
-    func getUpComing(parameters: UrlParameter,
-                     successHandler: @escaping ((MoviesResponse) -> Void),
-                     errorHandler: @escaping ErrorHandler) {
-        AF.request(baseUrl + Route.upComing.rawValue, method: .get, parameters: parameters).responseData { response in
-            guard let responseData = response.data else {
-                errorHandler("There was an error fetching data.")
-                return
-            }
-            do {
-                let movieResponse = try JSONDecoder().decode(MoviesResponse.self, from: responseData)
-                successHandler(movieResponse)
-            } catch let error {
-                errorHandler("There was an error fetching data.")
-                print(error)
-            }
-        }
+    func getUpComing(page: Int, completion: @escaping (NetworkResponse<MoviesResponse>) -> Void) {
+        request(route: .upComing, parameters: UrlParameter(page: page), completion: completion)
     }
     
-    
-    //MARK: - Action Movie  Details
-    func getMovieDetails(movieDetailsId: Int,
-                     successHandler: @escaping ((Movie) -> Void),
-                     errorHandler: @escaping ErrorHandler) {
-        AF.request("\(baseUrl)\(movieDetailsId)", method: .get, parameters: MovieDetailsUrlParameter()).responseData { response in
-            guard let responseData = response.data else {
-                errorHandler("There was an error fetching data.")
-                return
-            }
-            do {
-                let movieResponse = try JSONDecoder().decode(Movie.self, from: responseData)
-                successHandler(movieResponse)
-            } catch let error {
-                errorHandler("There was an error fetching data.")
-                print(error)
-            }
-        }
+    //MARK: - Action getMovieDetails - Slider
+    func getMovieDetails(with id: String, completion: @escaping (NetworkResponse<Movie>) -> Void) {
+        request(route: .movieDetails, parameters: MovieDetailsUrlParameter(), movieDetailsId: id, completion: completion)
     }
 }
