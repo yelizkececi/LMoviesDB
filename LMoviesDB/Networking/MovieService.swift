@@ -39,7 +39,6 @@ class MovieService {
                        successHandler: @escaping ((MoviesResponse) -> Void),
                        errorHandler: @escaping ErrorHandler) {
         AF.request(baseUrl + Route.nowPlaying.rawValue, method: .get, parameters: parameters).responseData { response in
-            print("yy Slider request = \(String(describing: response.request))")
             guard let responseData = response.data else {
                 errorHandler("There was an error fetching data.")
                 return
@@ -49,7 +48,7 @@ class MovieService {
                 successHandler(movieResponse)
             } catch let error {
                 errorHandler("There was an error fetching data.")
-                print("yeliz \(error)")
+                print(error)
             }
         }
     }
@@ -59,7 +58,6 @@ class MovieService {
                      successHandler: @escaping ((MoviesResponse) -> Void),
                      errorHandler: @escaping ErrorHandler) {
         AF.request(baseUrl + Route.upComing.rawValue, method: .get, parameters: parameters).responseData { response in
-            print("yy tableView List request = \(String(describing: response.request))")
             guard let responseData = response.data else {
                 errorHandler("There was an error fetching data.")
                 return
@@ -80,7 +78,6 @@ class MovieService {
                      successHandler: @escaping ((Movie) -> Void),
                      errorHandler: @escaping ErrorHandler) {
         AF.request("\(baseUrl)\(movieDetailsId)", method: .get, parameters: MovieDetailsUrlParameter()).responseData { response in
-            print("yy request = \(String(describing: response.request))")
             guard let responseData = response.data else {
                 errorHandler("There was an error fetching data.")
                 return
