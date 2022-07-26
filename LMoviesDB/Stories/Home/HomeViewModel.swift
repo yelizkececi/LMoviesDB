@@ -35,7 +35,7 @@ class HomeViewModel {
     
     //MARK: - Method Request loadUpComingMovieData
     func loadUpComingMovieData() {
-        MovieService.shared.getUpComing(page: 1, completion: { result in
+        MovieService.shared.getUpComing(page: currentPage, completion: { result in
             switch result {
             case .responseSuccess(let response):
                 self.movies.append(contentsOf: response.results)
@@ -48,7 +48,7 @@ class HomeViewModel {
     }
     
     func loadNowPlayingMovieData() {
-        MovieService.shared.getNowPlaying(page: 1, completion: { result in
+        MovieService.shared.getNowPlaying(page: currentPage, completion: { result in
             switch result {
             case .responseSuccess(let response):
                 self.sliderMovies = response.results
@@ -71,11 +71,8 @@ class HomeViewModel {
     func selectedMovieDetails(indexPath: IndexPath) {
         guard let movieDetailsId = movies[indexPath.row].id else { return }
         MovieService.shared.getMovieDetails(with: String(movieDetailsId), completion: { result in
-            print("yy \(result)")
             switch result {
-               
             case .responseSuccess(let response):
-                print("yy \(response)")
                 let moviesViewModel = MoviesViewModel(response)
                 self.delegate?.didSelectMovie(moviesViewModel)
             case .responseFail(let error):
