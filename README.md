@@ -1,9 +1,11 @@
 # LMoviesDB
 
 - The Movie DataBase API
+- Swiftlint
 - Alamofire
 - ImageSlideshow
 - SDWebImage
+- PKHUD
 - TableView
 - Segue
 - NavigationController
