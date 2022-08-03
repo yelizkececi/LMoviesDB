@@ -7,7 +7,7 @@
 
 import Foundation
 
-//MARK: - Properties
+// MARK: - Properties
 struct UrlParameter: Codable {
     let apiKey: String = "317863a86401cd4592cfbe000fd43565"
     let language: String = "en"
@@ -19,4 +19,3 @@ struct UrlParameter: Codable {
         case page
     }
 }
-

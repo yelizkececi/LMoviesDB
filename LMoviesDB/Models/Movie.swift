@@ -7,7 +7,7 @@
 
 import Foundation
 
-//MARK: - Properties
+// MARK: - Properties
 struct Movie: Codable {
     let id: Int?
     let overview: String?

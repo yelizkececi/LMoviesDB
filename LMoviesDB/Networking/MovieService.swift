@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 class MovieService {
-    //MARK: - Enum
+    // MARK: - Enum
     enum Route: String {
         case nowPlaying = "now_playing"
         case upComing = "upcoming"
@@ -26,26 +26,29 @@ class MovieService {
         case noData
     }
     
-    //MARK: - Typealias
+    // MARK: - Typealias
     typealias ErrorHandler = (_ errorMessage: String) -> Void
     
-    //MARK: - Properties
+    // MARK: - Properties
     static let shared = MovieService()
     
-    //MARK: - BaseURL
+    // MARK: - BaseURL
     let baseUrl = "https://api.themoviedb.org/3/movie/"
     
-    //MARK: - ApiKey
+    // MARK: - ApiKey
     let apiKey = "317863a86401cd4592cfbe000fd43565"
     
-    //MARK: - FilePath
+    // MARK: - FilePath
     let baseImageUrl = "https://image.tmdb.org/t/p/original"
     
-    //MARK: - IMDBPath
+    // MARK: - IMDBPath
     let baseIMDBUrl = "https://www.imdb.com/title/"
     let baseIMDBHomeUrl = "https://www.imdb.com/"
     
-    func request<E: Encodable, D: Decodable>(route: Route?, parameters: E, movieDetailsId: String = "", completion: @escaping (NetworkResponse<D>) -> Void) {
+    func request<E: Encodable, D: Decodable>(route: Route?,
+                                             parameters: E,
+                                             movieDetailsId: String = "",
+                                             completion: @escaping (NetworkResponse<D>) -> Void) {
         guard let url = route?.rawValue else {
             return completion(.responseFail(.unknown))
         }
@@ -53,16 +56,15 @@ class MovieService {
         
         do {
             let parameters = try parameters.asDictionary()
-            AF.request(endPoint, method:.get, parameters: parameters, encoding: URLEncoding.default).responseData { [weak self] data in
-                switch data.result{
+            AF.request(endPoint, method: .get, parameters: parameters, encoding: URLEncoding.default).responseData { [weak self] data in
+                switch data.result {
                 case let .success(responseData):
                     self?.handleDataResponse(data: responseData, completion: completion)
-                case .failure(_):
+                case .failure:
                     completion(.responseFail(.unknown))
                 }
             }
-        }
-        catch let error as NSError {
+        } catch let error as NSError {
             print(error.userInfo)
         }
     }
@@ -75,23 +77,22 @@ class MovieService {
         do {
             let model = try JSONDecoder().decode(D.self, from: data)
             completion(.responseSuccess(model))
-        }
-        catch let error as NSError {
+        } catch let error as NSError {
             print(error.userInfo)
         }
     }
     
-    //MARK: - Action Now Playing - Slider
+    // MARK: - Action Now Playing - Slider
     func getNowPlaying(page: Int, completion: @escaping (NetworkResponse<MoviesResponse>) -> Void) {
         request(route: .nowPlaying, parameters: UrlParameter(page: page), completion: completion)
     }
     
-    //MARK: - Action Up Coming - List
+    // MARK: - Action Up Coming - List
     func getUpComing(page: Int, completion: @escaping (NetworkResponse<MoviesResponse>) -> Void) {
         request(route: .upComing, parameters: UrlParameter(page: page), completion: completion)
     }
     
-    //MARK: - Action getMovieDetails - Slider
+    // MARK: - Action getMovieDetails - Slider
     func getMovieDetails(with id: String, completion: @escaping (NetworkResponse<Movie>) -> Void) {
         request(route: .movieDetails, parameters: MovieDetailsUrlParameter(), movieDetailsId: id, completion: completion)
     }

@@ -8,7 +8,7 @@
 import Foundation
 
 extension String {
-    //MARK: - Date Formatter
+    // MARK: - Date Formatter
     func formattedDateFromString(withFormat format: String) -> String? {
         let inputFormatter = DateFormatter()
         inputFormatter.dateFormat = "yyyy-mm-dd"

@@ -7,14 +7,15 @@
 
 import UIKit
 import ImageSlideshow
+import PKHUD
 
 class HomeViewController: UIViewController {
-    //MARK: - Properties
+    // MARK: - Properties
     private var homeViewModel = HomeViewModel()
     let cellReuseIdentifier = "MovieTableViewCell"
     let headerCellReuseIdentifier = "MovieHeaderTableViewCell"
 
-    @IBOutlet weak var tableView: UITableView!{
+    @IBOutlet private weak var tableView: UITableView! {
         didSet {
             tableView.delegate = self
             tableView.dataSource = self
@@ -45,7 +46,7 @@ class HomeViewController: UIViewController {
     }
 }
 
-//MARK: - TableView Extensions
+// MARK: - TableView Extensions
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -53,7 +54,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! MovieTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as? MovieTableViewCell else { return UITableViewCell() }
         self.homeViewModel.loadMoreDataIfNeeded(indexPath: indexPath)
         let movieViewModel = MoviesViewModel(self.homeViewModel.movieAtIndex(indexPath.row))
         cell.configure(for: movieViewModel)
@@ -61,7 +62,9 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let cell = tableView.dequeueReusableCell(withIdentifier: headerCellReuseIdentifier) as! MovieHeaderTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: headerCellReuseIdentifier) as? MovieHeaderTableViewCell else {
+            return UITableViewCell()
+        }
         let movieViewModel = homeViewModel.sliderMovies.map {
             MovieHeaderCellViewModel(movie: $0)
         }
@@ -71,11 +74,14 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.homeViewModel.selectedMovieDetails(indexPath: indexPath)
+        HUD.flash(.progress, delay: 0.1) { _ in
+            self.homeViewModel.selectedMovieDetails(indexPath: indexPath)
+        }
+
     }
 }
 
-//MARK: - HomeViewDelegate Extensions
+// MARK: - HomeViewDelegate Extensions
 extension HomeViewController: HomeViewModelDelegate {
     func didSelectMovie(_ moviesViewModel: MoviesViewModel) {
         self.performSegue(withIdentifier: "ToMovieDetailViewController", sender: moviesViewModel)

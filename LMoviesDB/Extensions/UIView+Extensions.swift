@@ -8,8 +8,8 @@
 import UIKit
 
 extension UIView {
-    //MARK: - Method Slider Animations
-    func fadeTransition(_ duration:CFTimeInterval) {
+    // MARK: - Method Slider Animations
+    func fadeTransition(_ duration: CFTimeInterval) {
         let animation = CATransition()
         animation.timingFunction = CAMediaTimingFunction(name:
             CAMediaTimingFunctionName.easeInEaseOut)
@@ -20,17 +20,18 @@ extension UIView {
 }
 
 class GradientView: UIView {
-    override open class var layerClass: AnyClass {
+    override class var layerClass: AnyClass {
         return CAGradientLayer.classForCoder()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        let gradientLayer = self.layer as! CAGradientLayer
-        gradientLayer.colors = [
-            UIColor.darkGray.cgColor,
-            UIColor.init(white: 1, alpha: 0.1).cgColor
-        ]
-        backgroundColor = UIColor.clear
+        if let gradientLayer = self.layer as? CAGradientLayer {
+            gradientLayer.colors = [
+                UIColor.darkGray.cgColor,
+                UIColor(white: 1, alpha: 0.1).cgColor
+            ]
+            backgroundColor = UIColor.clear
+        }
     }
 }

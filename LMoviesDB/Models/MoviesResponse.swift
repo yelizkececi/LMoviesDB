@@ -7,7 +7,7 @@
 
 import Foundation
 
-//MARK: - Properties
+// MARK: - Properties
 struct MoviesResponse: Codable {
     let page: Int
     let totalPages: Int

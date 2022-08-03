@@ -7,20 +7,21 @@
 
 import UIKit
 import SDWebImage
+import ImageSlideshow
 
 class MovieTableViewCell: UITableViewCell {
-    //MARK: - Properties
-    @IBOutlet weak var movieImageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
+    // MARK: - Properties
+    @IBOutlet private weak var movieImageView: UIImageView!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var descriptionLabel: UILabel!
+    @IBOutlet private weak var dateLabel: UILabel!
 
-    //MARK: - Method Configure
+    // MARK: - Method Configure
     func configure(for moviesViewModel: MoviesViewModel) {
-        self.movieImageView.sd_setImage(with: moviesViewModel.url, placeholderImage: UIImage(named: "image-dump-loading"))
+        self.movieImageView.sd_setImage(with: moviesViewModel.url,
+                                        placeholderImage: UIImage(named: "image-dump-loading"))
         self.titleLabel.text = moviesViewModel.title
         self.descriptionLabel.text = moviesViewModel.description
         self.dateLabel.text = moviesViewModel.date
     }
 }
-

@@ -7,7 +7,8 @@ target 'LMoviesDB' do
 
   pod 'Alamofire', '~> 5.2'
   pod "ImageSlideshow/SDWebImage"
-  
+  pod 'SwiftLint'
+  pod 'PKHUD', '~> 5.0'
   # Pods for LMoviesDB
 
 end

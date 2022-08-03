@@ -14,7 +14,7 @@ protocol HomeViewModelDelegate: AnyObject {
 }
 
 class HomeViewModel {
-    //MARK: - Properties
+    // MARK: - Properties
     var movies: [Movie] = []
     var sliderMovies: [Movie] = []
     var movie: Movie?
@@ -23,17 +23,17 @@ class HomeViewModel {
     
     weak var delegate: HomeViewModelDelegate?
      
-    //MARK: - Method TableView NumberOfRowsInSection
+    // MARK: - Method TableView NumberOfRowsInSection
     func numberOfRowsInSection() -> Int {
         return movies.count
     }
 
-    //MARK: - Method TableView MovieAtIndex
+    // MARK: - Method TableView MovieAtIndex
     func movieAtIndex(_ index: Int) -> Movie {
         return movies[index]
     }
     
-    //MARK: - Method Request loadUpComingMovieData
+    // MARK: - Method Request loadUpComingMovieData
     func loadUpComingMovieData() {
         MovieService.shared.getUpComing(page: currentPage, completion: { result in
             switch result {
@@ -59,15 +59,15 @@ class HomeViewModel {
         })
     }
     
-    //MARK: - Method Request loadMoreDataIfNeeded
+    // MARK: - Method Request loadMoreDataIfNeeded
     func loadMoreDataIfNeeded(indexPath: IndexPath) {
-        if ((indexPath.row == numberOfRowsInSection() - 1) &&  currentPage <= maxPage){
+        if indexPath.row == numberOfRowsInSection() - 1 && currentPage <= maxPage {
             currentPage += 1
             loadUpComingMovieData()
         }
     }
     
-    //MARK: - Method Movie selectedMovieDetails
+    // MARK: - Method Movie selectedMovieDetails
     func selectedMovieDetails(indexPath: IndexPath) {
         guard let movieDetailsId = movies[indexPath.row].id else { return }
         MovieService.shared.getMovieDetails(with: String(movieDetailsId), completion: { result in
@@ -81,5 +81,3 @@ class HomeViewModel {
         })
     }
 }
-
-

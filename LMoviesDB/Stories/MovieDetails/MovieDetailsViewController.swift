@@ -11,21 +11,21 @@ import SafariServices
 import SDWebImage
 
 class MovieDetailsViewController: UIViewController, SFSafariViewControllerDelegate {
-    //MARK: - Properties
-    @IBOutlet weak var movieImageView: UIImageView!
-    @IBOutlet weak var movieDateLabel: UILabel!
-    @IBOutlet weak var movieTitleLabel: UILabel!
-    @IBOutlet weak var movieDescriptionLabel: UILabel!
-    @IBOutlet weak var movieIMDBButton: UIButton!
-    @IBOutlet weak var movieRateLabel: UILabel!
+    // MARK: - Properties
+    @IBOutlet private weak var movieImageView: UIImageView!
+    @IBOutlet private weak var movieDateLabel: UILabel!
+    @IBOutlet private weak var movieTitleLabel: UILabel!
+    @IBOutlet private weak var movieDescriptionLabel: UILabel!
+    @IBOutlet private weak var movieIMDBButton: UIButton!
+    @IBOutlet private weak var movieRateLabel: UILabel!
     
-    var moviesViewModel: MoviesViewModel? = nil
-    
+    var moviesViewModel: MoviesViewModel?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         guard let viewModel = moviesViewModel else { return }
-        self.title =  viewModel.title
+        self.title = viewModel.title
         movieImageView.sd_setImage(with: viewModel.url, placeholderImage: UIImage(named: "image-dump-loading"))
         movieDateLabel.text = viewModel.date
         movieTitleLabel.text = viewModel.title
@@ -39,8 +39,8 @@ class MovieDetailsViewController: UIViewController, SFSafariViewControllerDelega
         self.navigationController?.navigationBar.backItem?.title = ""
     }
     
-    //MARK: - IMDB Button Tapped
-    @IBAction func onIMDBButtonTap(_ sender: Any) {
+    // MARK: - IMDB Button Tapped
+    @IBAction private func onIMDBButtonTap(_ sender: Any) {
         guard let viewModel = moviesViewModel else { return }
         if let url = viewModel.IMDBUrl {
             let safariViewController = SFSafariViewController(url: url)

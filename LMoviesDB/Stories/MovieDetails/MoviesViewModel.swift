@@ -9,7 +9,7 @@ import Foundation
 
 class MoviesViewModel {
     
-    //MARK: - Properties
+    // MARK: - Properties
     var movie: Movie
 
     init(_ movie: Movie) {
@@ -52,4 +52,3 @@ class MoviesViewModel {
         return URL(string: "\(MovieService.shared.baseIMDBHomeUrl)")
     }
 }
-
