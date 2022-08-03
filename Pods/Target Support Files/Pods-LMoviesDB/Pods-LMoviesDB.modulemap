@@ -1,6 +1,0 @@
-framework module Pods_LMoviesDB {
-  umbrella header "Pods-LMoviesDB-umbrella.h"
-
-  export *
-  module * { export * }
-}
